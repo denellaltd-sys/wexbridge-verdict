@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Which Sarah? — Submit Your Verdict</title>
+<meta name="description" content="Submit your Final Accusation Form for the Wexbridge case file Which Sarah? and receive your verdict.">
+<style>
+  :root{
+    --paper:#efe4cf; --paper2:#e7d9bd; --ink:#2b2420; --ink-soft:#5c5148;
+    --crimson:#8b1a1a; --crimson2:#a52222; --rule:#c3b190; --rule-dk:#9c876a;
+    --ok:#2f6b39; --no:#a52222; --stamp:rgba(139,26,26,.82);
+    --shadow:0 2px 10px rgba(60,40,20,.18);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 18% 12%, rgba(120,90,50,.10), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(120,90,50,.12), transparent 45%);
+    color:var(--ink);
+    font-family:Georgia,"Times New Roman",serif;
+    line-height:1.55;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:660px;margin:0 auto;padding:22px 18px 60px}
+  .sheet{
+    background:linear-gradient(180deg,#f6ecd8,#eaddc2);
+    border:1px solid var(--rule-dk);
+    box-shadow:var(--shadow);
+    padding:26px 22px;
+    position:relative;
+  }
+  .mono{font-family:ui-monospace,"SFMono-Regular","Courier New",monospace}
+  .eyebrow{
+    font-family:ui-monospace,"Courier New",monospace;
+    text-transform:uppercase;letter-spacing:.22em;font-size:11px;
+    color:var(--crimson);font-weight:700;
+  }
+  .constab{
+    display:flex;justify-content:space-between;align-items:baseline;
+    border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:4px;gap:10px;
+  }
+  .constab .l{font-family:ui-monospace,"Courier New",monospace;text-transform:uppercase;
+    letter-spacing:.14em;font-size:12px;font-weight:700}
+  .constab .r{font-family:ui-monospace,"Courier New",monospace;font-size:11px;color:var(--ink-soft)}
+  h1{font-size:31px;margin:.35em 0 .1em;letter-spacing:.01em;line-height:1.05}
+  h2{font-size:22px;margin:.2em 0 .5em}
+  h3{font-size:16px;margin:1.3em 0 .3em;letter-spacing:.02em}
+  p{margin:.55em 0}
+  .lede{color:var(--ink-soft);font-size:15px}
+  .caseref{font-family:ui-monospace,"Courier New",monospace;font-size:12px;color:var(--ink-soft);letter-spacing:.08em}
+  hr.rule{border:0;border-top:1px solid var(--rule);margin:18px 0}
+
+  /* form */
+  .q{margin:20px 0 0;padding-top:16px;border-top:1px dashed var(--rule)}
+  .q:first-of-type{border-top:0}
+  .q .qn{font-family:ui-monospace,"Courier New",monospace;font-size:12px;color:var(--crimson);font-weight:700}
+  .q label.qt{display:block;font-size:17px;font-weight:700;margin:2px 0 10px}
+  select, textarea{
+    width:100%;font-family:ui-monospace,"Courier New",monospace;font-size:15px;
+    color:var(--ink);background:#fbf4e4;border:1px solid var(--rule-dk);
+    padding:11px 12px;border-radius:2px;appearance:none;
+  }
+  select:focus,textarea:focus{outline:2px solid var(--crimson);outline-offset:1px}
+  .selwrap{position:relative}
+  .selwrap::after{content:"▾";position:absolute;right:12px;top:50%;transform:translateY(-50%);
+    pointer-events:none;color:var(--ink-soft)}
+  .choices{display:flex;gap:10px;flex-wrap:wrap}
+  .choice{flex:1 1 0;min-width:120px}
+  .choice input{position:absolute;opacity:0;pointer-events:none}
+  .choice label{
+    display:block;text-align:center;cursor:pointer;
+    font-family:ui-monospace,"Courier New",monospace;font-size:15px;
+    background:#fbf4e4;border:1px solid var(--rule-dk);padding:13px 10px;border-radius:2px;
+  }
+  .choice input:checked + label{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .choice input:focus-visible + label{outline:2px solid var(--crimson);outline-offset:1px}
+  textarea{min-height:64px;resize:vertical}
+  .q.missing select,.q.missing .choice label{border-color:var(--crimson);background:#f7e6d8}
+
+  .primary{
+    display:block;width:100%;margin-top:26px;cursor:pointer;
+    font-family:ui-monospace,"Courier New",monospace;text-transform:uppercase;letter-spacing:.12em;
+    font-size:15px;font-weight:700;color:var(--paper);background:var(--crimson);
+    border:1px solid #6f1414;padding:15px;border-radius:2px;
+  }
+  .primary{text-align:center;text-decoration:none}
+  .primary:hover{background:var(--crimson2)}
+  .primary:disabled{opacity:.55;cursor:default}
+  button.ghost{
+    display:inline-block;margin-top:14px;cursor:pointer;background:none;
+    border:0;color:var(--crimson);text-decoration:underline;font-family:Georgia,serif;font-size:14px;padding:4px 0;
+  }
+  .foot{margin-top:22px;text-align:center;font-size:13px;color:var(--ink-soft)}
+  .foot a{color:var(--crimson)}
+
+  /* stamps */
+  .stamp{
+    display:inline-block;border:3px solid var(--stamp);color:var(--stamp);
+    font-family:ui-monospace,"Courier New",monospace;text-transform:uppercase;letter-spacing:.10em;
+    font-weight:700;font-size:clamp(18px,5.5vw,26px);padding:10px 16px;border-radius:4px;
+    transform:rotate(-7deg);line-height:1.1;
+  }
+  .stamp.small{font-size:clamp(13px,3.6vw,16px);border-width:2px;padding:6px 10px}
+  @keyframes stampin{0%{transform:rotate(-7deg) scale(2.6);opacity:0}
+    60%{transform:rotate(-7deg) scale(.9);opacity:1}100%{transform:rotate(-7deg) scale(1)}}
+  .stamp.animate{animation:stampin .5s cubic-bezier(.2,1.3,.4,1) both}
+  .center{text-align:center}
+
+  /* reveal cards */
+  .screen{display:none}
+  .screen.active{display:block;animation:fadein .45s ease both}
+  @keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .bigscore{font-size:64px;font-weight:700;line-height:1;margin:6px 0}
+  .rankname{font-family:ui-monospace,"Courier New",monospace;text-transform:uppercase;
+    letter-spacing:.14em;font-size:20px;color:var(--crimson);font-weight:700}
+  .rankflavour{color:var(--ink-soft);font-size:15px}
+  .chargecard{border:1px solid var(--rule-dk);background:#fbf4e4;padding:12px 14px;margin:10px 0}
+  .chargecard .who{font-weight:700}
+  .chargecard .ch{font-family:ui-monospace,"Courier New",monospace;font-size:13px;color:var(--crimson);
+    text-transform:uppercase;letter-spacing:.06em}
+  .mark{border-top:1px dashed var(--rule);padding:12px 0}
+  .mark:first-of-type{border-top:0}
+  .mark .mq{font-weight:700;font-size:15px;margin-bottom:4px}
+  .mark .row{font-family:ui-monospace,"Courier New",monospace;font-size:13px;margin:2px 0}
+  .mark .tag{font-weight:700}
+  .mark.correct .tag{color:var(--ok)} .mark.wrong .tag{color:var(--no)}
+  .mark .sup{color:var(--ink-soft);font-style:italic;font-family:Georgia,serif;font-size:13px}
+  .review h3{color:var(--crimson);border-bottom:1px solid var(--rule);padding-bottom:2px}
+  .review .note{background:#fbf4e4;border-left:3px solid var(--rule-dk);padding:8px 12px;margin:10px 0;font-size:14px}
+  .timeline{font-family:ui-monospace,"Courier New",monospace;font-size:13px;margin:8px 0;padding-left:0;list-style:none}
+  .timeline li{display:flex;gap:12px;padding:2px 0}
+  .timeline .t{color:var(--crimson);min-width:52px}
+  .pollbtns{display:flex;gap:12px;margin:14px 0}
+  .pollbtns button{flex:1;cursor:pointer;font-family:ui-monospace,"Courier New",monospace;
+    text-transform:uppercase;letter-spacing:.08em;font-size:14px;font-weight:700;
+    background:#fbf4e4;border:1px solid var(--rule-dk);color:var(--ink);padding:16px 10px;border-radius:2px}
+  .pollbtns button.sel{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .emailrow input[type=email]{width:100%;font-family:ui-monospace,"Courier New",monospace;font-size:15px;
+    background:#fbf4e4;border:1px solid var(--rule-dk);padding:11px 12px;border-radius:2px;color:var(--ink)}
+  .consent{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--ink-soft);margin:10px 0}
+  .err{background:#f7e0d8;border:1px solid var(--no);color:#7a1a1a;padding:12px 14px;margin:14px 0;font-size:14px}
+  .spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.5);
+    border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-3px;margin-right:8px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .muted{color:var(--ink-soft);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="sheet">
+    <div class="constab">
+      <span class="l">Wexbridge Constabulary</span>
+      <span class="r">Case Review</span>
+    </div>
+    <div class="caseref">CASE REF: WS-2018-03-15</div>
+
+    <!-- ============================= FORM ============================= -->
+    <section id="s-form" class="screen active">
+      <div class="eyebrow">Final Accusation Form</div>
+      <h1>Which Sarah?</h1>
+      <p class="lede">You have worked the file. Now commit to your findings. Answer all eight
+        questions and submit them for review — the decision is issued on receipt.</p>
+      <hr class="rule">
+      <form id="accuse" novalidate>
+        <!-- questions injected here -->
+      </form>
+      <div id="formErr"></div>
+      <button class="primary" id="submitBtn" type="button">Submit case file</button>
+      <div class="foot">
+        Stuck, or something not working?
+        <a id="pdfFallback1" href="./solution.pdf" target="_blank" rel="noopener">Download the full solution PDF</a>.
+      </div>
+    </section>
+
+    <!-- ========================= 1. RECEIVED ========================= -->
+    <section id="s-received" class="screen">
+      <div class="center" style="padding:18px 0">
+        <div class="stamp animate">Case File<br>Submitted</div>
+      </div>
+      <h2 class="center">Your findings have been sent for review</h2>
+      <p class="center lede">Wexbridge Constabulary Case Review has logged your submission against
+        case WS-2018-03-15. A decision follows.</p>
+      <div class="center"><button class="primary" data-next style="max-width:280px;margin-inline:auto">Continue</button></div>
+    </section>
+
+    <!-- ========================== 2. CPS ============================ -->
+    <section id="s-cps" class="screen">
+      <div class="eyebrow">MG3 — CPS Decision</div>
+      <div class="center" style="padding:10px 0"><div class="stamp small animate">Charges Authorised</div></div>
+      <div id="charges"></div>
+      <p class="muted">Status: Full Code Test met. Decision recorded by Crown Prosecutor
+        Hugh Dimbledaw K.C.</p>
+      <div class="center"><button class="primary" data-next style="max-width:280px;margin-inline:auto">See your score</button></div>
+    </section>
+
+    <!-- ========================= 3. SCORE ========================== -->
+    <section id="s-score" class="screen center">
+      <div class="eyebrow">Your Assessment</div>
+      <div class="bigscore"><span id="scoreVal">0</span><span style="font-size:28px;color:var(--ink-soft)"> / 8</span></div>
+      <div class="rankname" id="rankName">—</div>
+      <p class="rankflavour" id="rankFlavour"></p>
+      <button class="primary" data-next style="max-width:280px;margin:18px auto 0">Mark my answers</button>
+    </section>
+
+    <!-- ========================= 4. MARKED ========================= -->
+    <section id="s-marked" class="screen">
+      <div class="eyebrow">Marked Submission</div>
+      <h2>Where you were right — and wrong</h2>
+      <div id="marks"></div>
+      <button class="primary" data-next>Read the case summary</button>
+    </section>
+
+    <!-- ========================= 5. REVIEW ========================= -->
+    <section id="s-review" class="screen review">
+      <div class="eyebrow">Case Review — Summary</div>
+      <h2>Which Sarah? — the solution</h2>
+      <p class="lede">Two women shared one name. The legal Sarah killed the man who had given her
+        identity away; Rebecca arrived too late to save him, but in time to remove the proof.</p>
+      <div class="note">This is a short summary. The full, illustrated case file — every exhibit,
+        in detail — is in the solution PDF, downloadable at the end.</div>
+
+      <h3>2014 — Rebecca Shaw becomes “R.S.”</h3>
+      <p>Rebecca Shaw gave evidence in the Cross Securities fraud trial and faced threats because of
+        it. Daniel Mercer had reported on the case and felt responsible for what followed. What began
+        as temporary protection became something more: Daniel helped Rebecca live inside the records
+        of a woman who already existed — <b>Sarah Elizabeth Vale</b>. He did not invent a person; he
+        moved Rebecca into a real identity. Tenancies, employment, medical registration and utilities
+        began carrying Sarah Vale’s name while describing Rebecca’s life. It was meant to last weeks.
+        It lasted four years.</p>
+      <div class="note">One medical record, two bodies: the historic shellfish allergy belongs to the
+        legal Sarah; the 5&nbsp;ft&nbsp;7 height and the scar above the left eyebrow were recorded when
+        Rebecca attended under Sarah’s name. That is why the file contradicts itself.</div>
+
+      <h3>The bank — one account, two instruments</h3>
+      <p>In November 2017 the account’s address and phone were changed by telephone banking to
+        18&nbsp;Calder Close, and a one-time code provisioned card 4762 into a mobile wallet. A
+        replacement physical card was later issued — but the original was never deactivated. Two live
+        instruments: the <b>physical card</b> stayed with the legal Sarah; the <b>wallet credential</b>
+        travelled with Rebecca. On the day of the death, the physical card bought fuel on Sarah’s car
+        route while the wallet tapped a Wexbridge rail gate. One account. Two women. Two trails.</p>
+
+      <h3>Rebecca’s failed meeting</h3>
+      <p>Daniel arranged to meet Rebecca at Northgate Parkway at 13:45 — then decided not to attend.
+        Rebecca’s rail movements place her far from the study across the whole death window.</p>
+      <ul class="timeline">
+        <li><span class="t">13:43</span><span>Arrives Northgate Parkway (approx.)</span></li>
+        <li><span class="t">13:44</span><span>Withheld call to Daniel — declined</span></li>
+        <li><span class="t">13:47</span><span>Second withheld call — declined</span></li>
+        <li><span class="t">13:52</span><span>Return journey begins</span></li>
+      </ul>
+
+      <h3>The killing</h3>
+      <p>The legal Sarah followed the car route: leaving the Merewick Garden Hotel at 09:42, fuel at
+        11:58 on card 4762, reaching Harlow Row shortly after 14:12. Daniel died between
+        <b>14:25 and 14:45</b> from a single close-range blow with the brass paperweight from his own
+        desk. The desk clock stopped at 14:37. The strike is consistent with a <b>left-handed</b>
+        assailant — Sarah A is left-handed; Rebecca is right-handed. At 14:55 Sarah’s handset created
+        the recovered photograph of the study. Car route, handset, death window, handedness and a later
+        lie all point to the same person: <b>Sarah A killed Daniel Mercer.</b></p>
+
+      <h3>Rebecca arrives too late</h3>
+      <p>Rebecca exited Wexbridge Central at 15:21 and reached the address at <b>15:32</b> — nearly an
+        hour after death. She entered through the unsecured door, found Daniel, and found the records
+        that could expose everything. She did not kill him. But she <b>altered the scene</b>: she opened
+        the drawer, searched the study, and stacked the papers as she stripped the R.S./S.V. document
+        wallet. Her fingerprint, a gold fibre and the disturbed room tie her to that post-death search.
+        Among the papers she carried off was Sarah’s handwritten route note — <i>possession is not
+        authorship.</i></p>
+
+      <h3>The two denials</h3>
+      <p>Both women were asked if they went to Harlow Row that day. Both said no. One denial hides a
+        killing; the other hides four years of a borrowed life. Sarah’s second, specific lie — “my
+        phone was in the car,” when her handset was at the property at 14:55 — is the one that breaks.</p>
+
+      <div class="note"><b>The trap:</b> a clue may be true, genuine, and still attached to the wrong
+        Sarah. The detainee really was the “real” Sarah Vale — and she was still the killer.</div>
+      <button class="primary" data-next>The one open question</button>
+    </section>
+
+    <!-- ========================== 6. POLL ========================== -->
+    <section id="s-poll" class="screen">
+      <div class="eyebrow">One Open Question</div>
+      <h2>Murder, or manslaughter?</h2>
+      <p class="lede">A paperweight from his own desk. One blow, in an escalating confrontation.
+        Nothing in the file proves she arrived intending to kill. Would you pursue the murder
+        conviction — or accept the manslaughter plea?</p>
+      <div class="pollbtns">
+        <button type="button" data-poll="murder">Pursue murder</button>
+        <button type="button" data-poll="manslaughter">Accept manslaughter</button>
+      </div>
+      <div class="emailrow" style="margin-top:8px">
+        <p class="muted" style="margin-bottom:6px">Want your verdict and the next case by email? (optional)</p>
+        <input type="email" id="email" placeholder="you@example.com" autocomplete="email" inputmode="email">
+        <label class="consent"><input type="checkbox" id="consent">
+          <span>Email me when the next Wexbridge case opens. I can unsubscribe any time.</span></label>
+      </div>
+      <div id="pollErr"></div>
+      <button class="primary" id="pollBtn" type="button">Record my verdict</button>
+      <div class="foot muted">Your result shows here regardless — email is just a keepsake.</div>
+    </section>
+
+    <!-- ========================== 7. DONE ========================== -->
+    <section id="s-done" class="screen center">
+      <div class="stamp animate" style="margin:14px 0">Case Closed</div>
+      <h2>Thank you for working the file</h2>
+      <p class="lede">Sarah A killed Daniel Mercer. Rebecca Shaw arrived after his death and removed
+        the identity papers. The name was shared; the actions were not.</p>
+      <p id="doneRank" class="rankname" style="font-size:16px"></p>
+      <hr class="rule">
+      <p class="lede">What you read here is a <b>summary</b>. The full case file — every exhibit,
+        illustrated and in full detail — is in the solution document.</p>
+      <a class="primary" id="pdfFinal" target="_blank" rel="noopener">Download the full solution (PDF)</a>
+      <hr class="rule">
+      <div class="eyebrow">The Next Case</div>
+      <h2 style="margin-top:6px">Why Nora?</h2>
+      <p class="lede">One body. A town full of reasons. If <i>Which Sarah?</i> kept you up past a
+        sensible hour, the next Wexbridge case file is waiting.</p>
+      <a class="primary" id="whyNoraLink" target="_blank" rel="noopener">Get Why Nora?</a>
+    </section>
+
+  </div>
+  <p class="foot muted">Wexbridge Case Files · Denella Publishing · denellapublishing.com/case-files</p>
+</div>
+
+<script>
+"use strict";
+const CONFIG = {
+  endpoint: "https://yninvzkocidcpkaoibpy.supabase.co/functions/v1/wexbridge",
+  apikey:   "sb_publishable_kLbFI-PBqhcv8o3Hs4Codw_hTToyoFh", // publishable, safe to ship
+  edition:  "which-sarah",
+  pdfUrl:   "./solution.pdf",
+  // Why Nora? (next case) buy link — the case-files brand page (lists the series).
+  whyNoraUrl: "https://denellapublishing.com/case-files/",
+};
+
+// ---- the 8 questions (constrained inputs) ----
+const NAMES = ["Claire Morton","Helen Price","Laura Quinn","Naomi Bell","Rebecca Shaw","Sarah Vale"];
+const EXHIBITS = Array.from({length:40},(_,i)=>"A-"+String(i+1).padStart(2,"0"));
+const Q5_OPTS = ["False identity trail","Fake person trail","Forged will","Secret account","Nothing"];
+const QUESTIONS = [
+  {id:"q1", type:"select", text:"Who is Sarah A?", opts:NAMES},
+  {id:"q2", type:"select", text:"Who is Sarah B?", opts:NAMES},
+  {id:"q3", type:"choice", text:"Which Sarah killed Daniel Mercer?", opts:["Sarah A","Sarah B"]},
+  {id:"q4", type:"choice", text:"Which Sarah altered the scene?", opts:["Sarah A","Sarah B"]},
+  {id:"q5", type:"select", text:"What did Daniel Mercer create years earlier?", opts:Q5_OPTS},
+  {id:"q6", type:"select", text:"Which exhibit proves the death window?", opts:EXHIBITS},
+  {id:"q7", type:"select", text:"Which exhibit proves the post-death arrival?", opts:EXHIBITS},
+  {id:"q8", type:"select", text:"Which exhibit proves evidence was removed from the scene?", opts:EXHIBITS},
+];
+
+// build the form
+const form = document.getElementById("accuse");
+QUESTIONS.forEach((q,i)=>{
+  const wrap = document.createElement("div");
+  wrap.className = "q"; wrap.id = "wrap-"+q.id;
+  const n = document.createElement("div"); n.className="qn"; n.textContent="Question "+(i+1);
+  const lab = document.createElement("label"); lab.className="qt"; lab.textContent=q.text;
+  lab.setAttribute("for", q.id);
+  wrap.append(n, lab);
+  if(q.type==="select"){
+    const sw=document.createElement("div"); sw.className="selwrap";
+    const sel=document.createElement("select"); sel.id=q.id; sel.name=q.id;
+    const ph=document.createElement("option"); ph.value=""; ph.textContent="Please choose"; ph.disabled=true; ph.selected=true;
+    sel.append(ph);
+    q.opts.forEach(o=>{const op=document.createElement("option");op.value=o;op.textContent=o;sel.append(op);});
+    sel.addEventListener("change",()=>wrap.classList.remove("missing"));
+    sw.append(sel); wrap.append(sw);
+  } else {
+    const box=document.createElement("div"); box.className="choices";
+    q.opts.forEach((o,j)=>{
+      const c=document.createElement("div"); c.className="choice";
+      const inp=document.createElement("input"); inp.type="radio"; inp.name=q.id; inp.id=q.id+"-"+j; inp.value=o;
+      const l=document.createElement("label"); l.setAttribute("for",q.id+"-"+j); l.textContent=o;
+      inp.addEventListener("change",()=>wrap.classList.remove("missing"));
+      c.append(inp,l); box.append(c);
+    });
+    wrap.append(box);
+  }
+  form.append(wrap);
+});
+// optional theory
+const tw=document.createElement("div"); tw.className="q";
+tw.innerHTML='<div class="qn">Optional</div><label class="qt" for="theory">Your theory in one sentence</label>';
+const ta=document.createElement("textarea"); ta.id="theory"; ta.maxLength=500;
+ta.placeholder="Not marked — just tell us how you read it.";
+tw.append(ta); form.append(tw);
+
+// point links at config
+document.getElementById("pdfFallback1").href = CONFIG.pdfUrl;
+document.getElementById("pdfFinal").href = CONFIG.pdfUrl;
+document.getElementById("whyNoraLink").href = CONFIG.whyNoraUrl;
+
+// ---- screen router ----
+const REVEAL = ["s-received","s-cps","s-score","s-marked","s-review","s-poll"];
+let revealIdx = -1;
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  const el=document.getElementById(id); el.classList.add("active");
+  // re-trigger stamp animations
+  el.querySelectorAll(".stamp").forEach(st=>{st.classList.remove("animate");void st.offsetWidth;st.classList.add("animate");});
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll("[data-next]").forEach(b=>b.addEventListener("click",()=>{
+  revealIdx=Math.min(revealIdx+1,REVEAL.length-1); show(REVEAL[revealIdx]);
+}));
+
+// ---- collect + validate ----
+function collect(){
+  const a={};
+  for(const q of QUESTIONS){
+    if(q.type==="select"){ a[q.id]=(document.getElementById(q.id).value||""); }
+    else { const c=form.querySelector('input[name="'+q.id+'"]:checked'); a[q.id]=c?c.value:""; }
+  }
+  const th=document.getElementById("theory").value.trim();
+  if(th) a.theory=th;
+  return a;
+}
+function firstMissing(a){
+  for(const q of QUESTIONS){ if(!a[q.id]) return q.id; } return null;
+}
+
+// ---- submit ----
+const submitBtn=document.getElementById("submitBtn");
+let RESULT=null;   // {submissionId, token}
+submitBtn.addEventListener("click", async ()=>{
+  // partial submissions are allowed: any blank answers are simply marked wrong.
+  const a=collect();
+  document.getElementById("formErr").innerHTML="";
+  submitBtn.disabled=true; const label=submitBtn.textContent;
+  submitBtn.innerHTML='<span class="spin"></span>Submitting…';
+  try{
+    const r=await fetch(CONFIG.endpoint,{
+      method:"POST",
+      headers:{"content-type":"application/json","apikey":CONFIG.apikey},
+      body:JSON.stringify({action:"submit", edition:CONFIG.edition, answers:a}),
+    });
+    const data=await r.json();
+    if(!r.ok || !data.ok) throw new Error(data.message||data.error||"submit failed");
+    RESULT={submissionId:data.submissionId, token:data.token};
+    renderReveal(data);
+    revealIdx=0; show(REVEAL[0]);
+  }catch(err){
+    submitBtn.disabled=false; submitBtn.textContent=label;
+    document.getElementById("formErr").innerHTML=
+      '<div class="err">We couldn’t reach the case review server. Your verdict is safe — read the full solution here: '
+      +'<a href="'+CONFIG.pdfUrl+'" target="_blank" rel="noopener">download the solution PDF</a>.</div>';
+  }
+});
+
+// ---- render the reveal from the server response ----
+function renderReveal(data){
+  // CPS
+  const ch=document.getElementById("charges"); ch.innerHTML="";
+  (data.charge?.charges||[]).forEach(c=>{
+    const d=document.createElement("div"); d.className="chargecard";
+    d.innerHTML='<div class="who">'+esc(c.suspect)+'</div><div class="ch">'+esc(c.charge)+'</div>';
+    ch.append(d);
+  });
+  // score + rank
+  document.getElementById("scoreVal").textContent=data.score;
+  document.getElementById("rankName").textContent=data.rank;
+  document.getElementById("rankFlavour").textContent=rankFlavour(data.score);
+  document.getElementById("doneRank").textContent=data.rank==="Detective"?"Rank achieved: Detective — a perfect file.":("Rank achieved: "+data.rank);
+  // marks
+  const m=document.getElementById("marks"); m.innerHTML="";
+  (data.marks||[]).forEach(mk=>{
+    const d=document.createElement("div"); d.className="mark "+(mk.correct?"correct":"wrong");
+    d.innerHTML=
+      '<div class="mq">'+esc(mk.question)+'</div>'+
+      '<div class="row"><span class="tag">'+(mk.correct?"✓ CORRECT":"✗ INCORRECT")+'</span></div>'+
+      '<div class="row">Your answer: '+esc(mk.yourAnswer||"—")+'</div>'+
+      (mk.correct?"":'<div class="row">Correct answer: <b>'+esc(mk.correctAnswer)+'</b></div>')+
+      '<div class="sup">'+esc(mk.supportingExhibit)+'</div>';
+    m.append(d);
+  });
+}
+function rankFlavour(s){
+  if(s>=8) return "A perfect file. Every answer supported by an exhibit that fits its owner's true timeline.";
+  if(s>=6) return "A strong file — the right instincts, a detail or two short of airtight.";
+  if(s>=4) return "A working file. You saw the shape of it; the exhibits didn't all line up.";
+  return "The file will still be there tomorrow. Come back to it.";
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+// ---- poll ----
+let pollChoice=null;
+document.querySelectorAll("[data-poll]").forEach(b=>b.addEventListener("click",()=>{
+  pollChoice=b.dataset.poll;
+  document.querySelectorAll("[data-poll]").forEach(x=>x.classList.toggle("sel",x===b));
+}));
+const pollBtn=document.getElementById("pollBtn");
+pollBtn.addEventListener("click", async ()=>{
+  const email=document.getElementById("email").value.trim();
+  const consent=document.getElementById("consent").checked;
+  if(!pollChoice && !email){ show("s-done"); return; }  // nothing to record; just finish
+  pollBtn.disabled=true; pollBtn.innerHTML='<span class="spin"></span>Recording…';
+  try{
+    if(RESULT){
+      await fetch(CONFIG.endpoint,{
+        method:"POST",
+        headers:{"content-type":"application/json","apikey":CONFIG.apikey},
+        body:JSON.stringify({action:"poll", submissionId:RESULT.submissionId, token:RESULT.token,
+          poll_choice:pollChoice, email:email||undefined, consent_newsletter:consent}),
+      });
+    }
+  }catch(_){/* poll is best-effort; never block the ending */}
+  show("s-done");
+});
+</script>
+</body>
+</html>
