@@ -108,7 +108,25 @@
   @keyframes stampin{0%{transform:rotate(-7deg) scale(2.6);opacity:0}
     60%{transform:rotate(-7deg) scale(.9);opacity:1}100%{transform:rotate(-7deg) scale(1)}}
   .stamp.animate{animation:stampin .5s cubic-bezier(.2,1.3,.4,1) both}
+  #s-received .stamp.animate{animation-delay:1.55s}
   .center{text-align:center}
+
+  /* filing-to-archive animation */
+  .filing{position:relative;width:170px;height:150px;margin:0 auto}
+  .filing .cabinet{position:absolute;bottom:22px;left:35px;width:100px;height:78px;background:#c9b48f;
+    border:2px solid #7a6a4d;border-radius:4px}
+  .filing .drawer{position:absolute;top:20px;left:10px;right:10px;height:26px;background:#b39d78;
+    border:2px solid #7a6a4d;border-radius:2px;transform-origin:top;animation:drawer 1.6s ease both}
+  .filing .drawer::after{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);
+    width:26px;height:4px;background:#7a6a4d;border-radius:2px}
+  .filing .doc{position:absolute;left:50%;width:46px;height:58px;margin-left:-23px;background:#fbf7ec;
+    border:1px solid #b7a684;border-radius:2px;animation:fileit 1.6s ease-in both}
+  .filing .doc::before,.filing .doc::after{content:"";position:absolute;left:8px;right:8px;height:2px;background:#d8c9a8}
+  .filing .doc::before{top:14px} .filing .doc::after{top:22px}
+  .filing-label{position:absolute;bottom:-4px;left:0;right:0;font-family:ui-monospace,"Courier New",monospace;
+    font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.1em}
+  @keyframes fileit{0%{top:-14px;opacity:0}18%{opacity:1}62%{top:44px;opacity:1}100%{top:44px;opacity:0}}
+  @keyframes drawer{0%,30%{transform:translateY(0)}55%{transform:translateY(6px)}80%,100%{transform:translateY(0)}}
 
   /* reveal cards */
   .screen{display:none}
@@ -181,7 +199,14 @@
 
     <!-- ========================= 1. RECEIVED ========================= -->
     <section id="s-received" class="screen">
-      <div class="center" style="padding:18px 0">
+      <div class="center" style="padding:8px 0 4px">
+        <div class="filing">
+          <div class="doc"></div>
+          <div class="cabinet"><div class="drawer"></div></div>
+          <div class="filing-label">Filing to the Wexbridge Archive…</div>
+        </div>
+      </div>
+      <div class="center" style="padding:6px 0 14px">
         <div class="stamp animate">Case File<br>Submitted</div>
       </div>
       <h2 class="center">Your findings have been sent for review</h2>
@@ -206,7 +231,8 @@
       <div class="bigscore"><span id="scoreVal">0</span><span style="font-size:28px;color:var(--ink-soft)"> / 8</span></div>
       <div class="rankname" id="rankName">—</div>
       <p class="rankflavour" id="rankFlavour"></p>
-      <button class="primary" data-next style="max-width:280px;margin:18px auto 0">Mark my answers</button>
+      <button class="primary" id="shareBtn" type="button" style="max-width:280px;margin:16px auto 0;background:var(--ink);border-color:var(--ink)">Share your rank</button>
+      <button class="primary" data-next style="max-width:280px;margin:12px auto 0">Mark my answers</button>
     </section>
 
     <!-- ========================= 4. MARKED ========================= -->
@@ -318,7 +344,7 @@
       <p class="lede">Enjoyed the case? A quick Amazon review helps a small publisher more than you'd
         think — and helps the next detective find the file.</p>
       <a class="primary" id="reviewLink" target="_blank" rel="noopener">Leave an Amazon review</a>
-      <!-- SHARE-CARD-SLOT (Tier 2) -->
+      <button class="primary" id="shareBtn2" type="button" style="background:var(--ink);border-color:var(--ink)">Share your rank card</button>
       <hr class="rule">
       <div class="eyebrow">The Next Case</div>
       <h2 style="margin-top:6px">Why Nora?</h2>
@@ -469,8 +495,50 @@ submitBtn.addEventListener("click", async ()=>{
   }
 });
 
+// ---- shareable rank card ----
+let LAST_SCORE=0, LAST_RANK_SHORT="Investigator";
+function rankCardBlob(){
+  return new Promise((resolve)=>{
+    const c=document.createElement("canvas"); c.width=1080; c.height=1080;
+    const x=c.getContext("2d");
+    x.fillStyle="#efe4cf"; x.fillRect(0,0,1080,1080);
+    x.strokeStyle="#9c876a"; x.lineWidth=6; x.strokeRect(44,44,992,992);
+    x.strokeStyle="#8b1a1a"; x.lineWidth=2; x.strokeRect(64,64,952,952);
+    x.textAlign="center";
+    x.fillStyle="#8b1a1a"; x.font='700 34px "Courier New", monospace';
+    x.fillText("W E X B R I D G E   C A S E   F I L E S", 540, 210);
+    x.fillStyle="#5c5148"; x.font='24px "Courier New", monospace';
+    x.fillText("CASE WS-2018-03-15 · WHICH SARAH?", 540, 262);
+    x.fillStyle="#2b2420"; x.font='700 300px Georgia, serif';
+    x.fillText(LAST_SCORE+"/8", 540, 660);
+    x.fillStyle="#8b1a1a"; x.font='700 96px Georgia, serif';
+    x.fillText(LAST_RANK_SHORT.toUpperCase(), 540, 800);
+    x.fillStyle="#5c5148"; x.font='28px "Courier New", monospace';
+    x.fillText("Can you close the case?", 540, 890);
+    x.fillStyle="#8b1a1a"; x.font='700 26px "Courier New", monospace';
+    x.fillText("VERDICT.DENELLAPUBLISHING.COM", 540, 952);
+    c.toBlob(b=>resolve(b), "image/png");
+  });
+}
+async function shareRank(){
+  let blob; try{ blob=await rankCardBlob(); }catch(e){ return; }
+  if(!blob) return;
+  const file=new File([blob], "wexbridge-rank.png", {type:"image/png"});
+  const text=LAST_SCORE+"/8 · "+LAST_RANK_SHORT+" at Wexbridge Case Files. Can you close the case? Which Sarah?";
+  if(navigator.canShare && navigator.canShare({files:[file]})){
+    try{ await navigator.share({files:[file], text}); return; }catch(_){ /* user cancelled or unsupported → fall through */ }
+  }
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=url; a.download="wexbridge-rank.png"; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+}
+document.getElementById("shareBtn").addEventListener("click", shareRank);
+document.getElementById("shareBtn2").addEventListener("click", shareRank);
+
 // ---- render the reveal from the server response ----
 function renderReveal(data){
+  LAST_SCORE=data.score;
+  LAST_RANK_SHORT = data.score>=4 ? data.rank : "Investigator";
   // CPS
   const ch=document.getElementById("charges"); ch.innerHTML="";
   (data.charge?.charges||[]).forEach(c=>{
