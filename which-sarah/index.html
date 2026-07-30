@@ -124,7 +124,10 @@
     text-transform:uppercase;letter-spacing:.06em}
   .mark{border-top:1px dashed var(--rule);padding:12px 0}
   .mark:first-of-type{border-top:0}
-  .mark .mq{font-weight:700;font-size:15px;margin-bottom:4px}
+  .mark .mq{display:flex;gap:8px;align-items:baseline;font-weight:700;font-size:15px;margin-bottom:4px}
+  .mark .badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;
+    border-radius:50%;font-size:12px;line-height:1;flex:0 0 auto;color:#fff;transform:translateY(2px)}
+  .mark.correct .badge{background:var(--ok)} .mark.wrong .badge{background:var(--no)}
   .mark .row{font-family:ui-monospace,"Courier New",monospace;font-size:13px;margin:2px 0}
   .mark .tag{font-weight:700}
   .mark.correct .tag{color:var(--ok)} .mark.wrong .tag{color:var(--no)}
@@ -169,10 +172,10 @@
         <!-- questions injected here -->
       </form>
       <div id="formErr"></div>
-      <button class="primary" id="submitBtn" type="button">Submit case file</button>
+      <button class="primary" id="submitBtn" type="button">Submit to CPS</button>
       <div class="foot">
-        Stuck, or something not working?
-        <a id="pdfFallback1" href="./solution.pdf" target="_blank" rel="noopener">Download the full solution PDF</a>.
+        Something not working?
+        <a id="pdfFallback1" href="#">Reveal the solution</a>.
       </div>
     </section>
 
@@ -193,7 +196,7 @@
       <div class="center" style="padding:10px 0"><div class="stamp small animate">Charges Authorised</div></div>
       <div id="charges"></div>
       <p class="muted">Status: Full Code Test met. Decision recorded by Crown Prosecutor
-        Hugh Dimbledaw K.C.</p>
+        Hugh Dimbledaw Q.C.</p>
       <div class="center"><button class="primary" data-next style="max-width:280px;margin-inline:auto">See your score</button></div>
     </section>
 
@@ -211,12 +214,12 @@
       <div class="eyebrow">Marked Submission</div>
       <h2>Where you were right — and wrong</h2>
       <div id="marks"></div>
-      <button class="primary" data-next>Read the case summary</button>
+      <button class="primary" data-next>Read the CPS review</button>
     </section>
 
     <!-- ========================= 5. REVIEW ========================= -->
     <section id="s-review" class="screen review">
-      <div class="eyebrow">Case Review — Summary</div>
+      <div class="eyebrow">CPS Case Review</div>
       <h2>Which Sarah? — the solution</h2>
       <p class="lede">Two women shared one name. The legal Sarah killed the man who had given her
         identity away; Rebecca arrived too late to save him, but in time to remove the proof.</p>
@@ -311,15 +314,21 @@
         the identity papers. The name was shared; the actions were not.</p>
       <p id="doneRank" class="rankname" style="font-size:16px"></p>
       <hr class="rule">
-      <p class="lede">What you read here is a <b>summary</b>. The full case file — every exhibit,
-        illustrated and in full detail — is in the solution document.</p>
-      <a class="primary" id="pdfFinal" target="_blank" rel="noopener">Download the full solution (PDF)</a>
+      <div class="eyebrow">One Small Favour</div>
+      <p class="lede">Enjoyed the case? A quick Amazon review helps a small publisher more than you'd
+        think — and helps the next detective find the file.</p>
+      <a class="primary" id="reviewLink" target="_blank" rel="noopener">Leave an Amazon review</a>
+      <!-- SHARE-CARD-SLOT (Tier 2) -->
       <hr class="rule">
       <div class="eyebrow">The Next Case</div>
       <h2 style="margin-top:6px">Why Nora?</h2>
       <p class="lede">One body. A town full of reasons. If <i>Which Sarah?</i> kept you up past a
         sensible hour, the next Wexbridge case file is waiting.</p>
       <a class="primary" id="whyNoraLink" target="_blank" rel="noopener">Get Why Nora?</a>
+      <hr class="rule">
+      <p class="lede">What you read here is a <b>summary</b>. The full case file — every exhibit,
+        illustrated and in full detail — is the complete document.</p>
+      <a class="primary" id="pdfFinal" target="_blank" rel="noopener">Download complete case file</a>
     </section>
 
   </div>
@@ -335,6 +344,8 @@ const CONFIG = {
   pdfUrl:   "./solution.pdf",
   // Why Nora? (next case) buy link — the case-files brand page (lists the series).
   whyNoraUrl: "https://denellapublishing.com/case-files/",
+  // Amazon "write a review" deep link for Which Sarah? (ASIN 1918954178).
+  reviewUrl: "https://www.amazon.co.uk/review/create-review?asin=1918954178",
 };
 
 // ---- the 8 questions (constrained inputs) ----
@@ -390,9 +401,16 @@ ta.placeholder="Not marked — just tell us how you read it.";
 tw.append(ta); form.append(tw);
 
 // point links at config
-document.getElementById("pdfFallback1").href = CONFIG.pdfUrl;
 document.getElementById("pdfFinal").href = CONFIG.pdfUrl;
 document.getElementById("whyNoraLink").href = CONFIG.whyNoraUrl;
+document.getElementById("reviewLink").href = CONFIG.reviewUrl;
+// pre-submit "reveal the solution" is confirm-gated so idle curiosity can't spoil it
+document.getElementById("pdfFallback1").addEventListener("click",(e)=>{
+  e.preventDefault();
+  if(confirm("This reveals the killer before you've submitted your file. Are you sure you want to continue?")){
+    window.open(CONFIG.pdfUrl,"_blank","noopener");
+  }
+});
 
 // ---- screen router ----
 const REVEAL = ["s-received","s-cps","s-score","s-marked","s-review","s-poll"];
@@ -470,7 +488,7 @@ function renderReveal(data){
   (data.marks||[]).forEach(mk=>{
     const d=document.createElement("div"); d.className="mark "+(mk.correct?"correct":"wrong");
     d.innerHTML=
-      '<div class="mq">'+esc(mk.question)+'</div>'+
+      '<div class="mq"><span class="badge">'+(mk.correct?"✓":"✗")+'</span><span>'+esc(mk.question)+'</span></div>'+
       '<div class="row"><span class="tag">'+(mk.correct?"✓ CORRECT":"✗ INCORRECT")+'</span></div>'+
       '<div class="row">Your answer: '+esc(mk.yourAnswer||"—")+'</div>'+
       (mk.correct?"":'<div class="row">Correct answer: <b>'+esc(mk.correctAnswer)+'</b></div>')+
