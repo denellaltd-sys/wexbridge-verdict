@@ -108,25 +108,31 @@
   @keyframes stampin{0%{transform:rotate(-7deg) scale(2.6);opacity:0}
     60%{transform:rotate(-7deg) scale(.9);opacity:1}100%{transform:rotate(-7deg) scale(1)}}
   .stamp.animate{animation:stampin .5s cubic-bezier(.2,1.3,.4,1) both}
-  #s-received .stamp.animate{animation-delay:1.55s}
   .center{text-align:center}
 
-  /* filing-to-archive animation */
-  .filing{position:relative;width:170px;height:150px;margin:0 auto}
-  .filing .cabinet{position:absolute;bottom:22px;left:35px;width:100px;height:78px;background:#c9b48f;
+  /* filing-to-archive sequence: the file drops into the cabinet, fades, THEN the
+     stamp lands in its place — all inside one fixed-height box so nothing overlaps. */
+  .archive-seq{position:relative;height:200px;margin:6px 0 10px}
+  .archive-seq .filing{position:absolute;top:4px;left:50%;transform:translateX(-50%);width:150px;height:118px;
+    animation:filingfade 1.7s ease both}
+  .archive-seq .cabinet{position:absolute;bottom:0;left:25px;width:100px;height:78px;background:#c9b48f;
     border:2px solid #7a6a4d;border-radius:4px}
-  .filing .drawer{position:absolute;top:20px;left:10px;right:10px;height:26px;background:#b39d78;
-    border:2px solid #7a6a4d;border-radius:2px;transform-origin:top;animation:drawer 1.6s ease both}
-  .filing .drawer::after{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);
+  .archive-seq .drawer{position:absolute;top:20px;left:10px;right:10px;height:26px;background:#b39d78;
+    border:2px solid #7a6a4d;border-radius:2px;animation:drawer 1.4s ease both}
+  .archive-seq .drawer::after{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);
     width:26px;height:4px;background:#7a6a4d;border-radius:2px}
-  .filing .doc{position:absolute;left:50%;width:46px;height:58px;margin-left:-23px;background:#fbf7ec;
-    border:1px solid #b7a684;border-radius:2px;animation:fileit 1.6s ease-in both}
-  .filing .doc::before,.filing .doc::after{content:"";position:absolute;left:8px;right:8px;height:2px;background:#d8c9a8}
-  .filing .doc::before{top:14px} .filing .doc::after{top:22px}
-  .filing-label{position:absolute;bottom:-4px;left:0;right:0;font-family:ui-monospace,"Courier New",monospace;
-    font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.1em}
-  @keyframes fileit{0%{top:-14px;opacity:0}18%{opacity:1}62%{top:44px;opacity:1}100%{top:44px;opacity:0}}
+  .archive-seq .doc{position:absolute;left:50%;width:46px;height:58px;margin-left:-23px;background:#fbf7ec;
+    border:1px solid #b7a684;border-radius:2px;animation:fileit 1.4s ease-in both}
+  .archive-seq .doc::before,.archive-seq .doc::after{content:"";position:absolute;left:8px;right:8px;height:2px;background:#d8c9a8}
+  .archive-seq .doc::before{top:14px} .archive-seq .doc::after{top:22px}
+  .archive-seq .filing-label{position:absolute;top:128px;left:0;right:0;text-align:center;
+    font-family:ui-monospace,"Courier New",monospace;font-size:11px;color:var(--ink-soft);
+    text-transform:uppercase;letter-spacing:.1em;animation:filingfade 1.7s ease both}
+  .archive-seq .stamp-wrap{position:absolute;top:64px;left:0;right:0;display:flex;justify-content:center}
+  #s-received .stamp.animate{animation:stampin .5s cubic-bezier(.2,1.3,.4,1) 1.5s both}
+  @keyframes fileit{0%{top:-14px;opacity:0}20%{opacity:1}62%{top:40px;opacity:1}100%{top:40px;opacity:0}}
   @keyframes drawer{0%,30%{transform:translateY(0)}55%{transform:translateY(6px)}80%,100%{transform:translateY(0)}}
+  @keyframes filingfade{0%,55%{opacity:1}75%,100%{opacity:0}}
 
   /* reveal cards */
   .screen{display:none}
@@ -193,21 +199,19 @@
       <button class="primary" id="submitBtn" type="button">Submit to CPS</button>
       <div class="foot">
         Something not working?
-        <a id="pdfFallback1" href="#">Reveal the solution</a>.
+        <a id="supportLink1" href="#">Contact the case office</a>.
       </div>
     </section>
 
     <!-- ========================= 1. RECEIVED ========================= -->
     <section id="s-received" class="screen">
-      <div class="center" style="padding:8px 0 4px">
+      <div class="archive-seq">
         <div class="filing">
           <div class="doc"></div>
           <div class="cabinet"><div class="drawer"></div></div>
-          <div class="filing-label">Filing to the Wexbridge Archive…</div>
         </div>
-      </div>
-      <div class="center" style="padding:6px 0 14px">
-        <div class="stamp animate">Case File<br>Submitted</div>
+        <div class="filing-label">Filing to the Wexbridge Archive…</div>
+        <div class="stamp-wrap"><div class="stamp animate">Case File<br>Submitted</div></div>
       </div>
       <h2 class="center">Your findings have been sent for review</h2>
       <p class="center lede">Wexbridge Constabulary Case Review has logged your submission against
@@ -321,6 +325,7 @@
         <button type="button" data-poll="murder">Pursue murder</button>
         <button type="button" data-poll="manslaughter">Accept manslaughter</button>
       </div>
+      <div id="pollSplit" class="foot muted" style="margin-top:2px"></div>
       <div class="emailrow" style="margin-top:8px">
         <p class="muted" style="margin-bottom:6px">Want your verdict and the next case by email? (optional)</p>
         <input type="email" id="email" placeholder="you@example.com" autocomplete="email" inputmode="email">
@@ -367,11 +372,16 @@ const CONFIG = {
   endpoint: "https://yninvzkocidcpkaoibpy.supabase.co/functions/v1/wexbridge",
   apikey:   "sb_publishable_kLbFI-PBqhcv8o3Hs4Codw_hTToyoFh", // publishable, safe to ship
   edition:  "which-sarah",
+  // Fallback PDF path until the full Storage gate is live; then the function's
+  // signed URL takes over and this public file is removed.
   pdfUrl:   "./solution.pdf",
   // Why Nora? (next case) buy link — the case-files brand page (lists the series).
   whyNoraUrl: "https://denellapublishing.com/case-files/",
   // Amazon "write a review" deep link for Which Sarah? (ASIN 1918954178).
   reviewUrl: "https://www.amazon.co.uk/review/create-review?asin=1918954178",
+  // Support / fault door. The solution PDF is GATED behind submission (served
+  // via a signed URL from the function), so this is a SEPARATE door, not the reveal.
+  supportEmail: "contactus@denellapublishing.com",
 };
 
 // ---- the 8 questions (constrained inputs) ----
@@ -427,16 +437,12 @@ ta.placeholder="Not marked — just tell us how you read it.";
 tw.append(ta); form.append(tw);
 
 // point links at config
-document.getElementById("pdfFinal").href = CONFIG.pdfUrl;
 document.getElementById("whyNoraLink").href = CONFIG.whyNoraUrl;
 document.getElementById("reviewLink").href = CONFIG.reviewUrl;
-// pre-submit "reveal the solution" is confirm-gated so idle curiosity can't spoil it
-document.getElementById("pdfFallback1").addEventListener("click",(e)=>{
-  e.preventDefault();
-  if(confirm("This reveals the killer before you've submitted your file. Are you sure you want to continue?")){
-    window.open(CONFIG.pdfUrl,"_blank","noopener");
-  }
-});
+// the solution PDF is GATED — served only after submission via a signed URL.
+// Pre-submit "something not working?" is a support-only door, NOT the reveal.
+const SUPPORT_MAILTO = "mailto:"+CONFIG.supportEmail+"?subject="+encodeURIComponent("Which Sarah? — case review help");
+document.getElementById("supportLink1").href = SUPPORT_MAILTO;
 
 // ---- screen router ----
 const REVEAL = ["s-received","s-cps","s-score","s-marked","s-review","s-poll"];
@@ -485,13 +491,18 @@ submitBtn.addEventListener("click", async ()=>{
     const data=await r.json();
     if(!r.ok || !data.ok) throw new Error(data.message||data.error||"submit failed");
     RESULT={submissionId:data.submissionId, token:data.token};
+    // gated PDF: the function returns a short-lived signed URL. Wire the final
+    // "Download complete case file" button to it; if unavailable, offer support.
+    const pf=document.getElementById("pdfFinal");
+    pf.href = data.pdfUrl || CONFIG.pdfUrl;   // signed URL once the gate is live; public PDF until then
     renderReveal(data);
+    fetchTally();
     revealIdx=0; show(REVEAL[0]);
   }catch(err){
     submitBtn.disabled=false; submitBtn.textContent=label;
     document.getElementById("formErr").innerHTML=
-      '<div class="err">We couldn’t reach the case review server. Your verdict is safe — read the full solution here: '
-      +'<a href="'+CONFIG.pdfUrl+'" target="_blank" rel="noopener">download the solution PDF</a>.</div>';
+      '<div class="err">We couldn’t reach the case review server. Please try again in a moment — '
+      +'or <a href="'+SUPPORT_MAILTO+'">contact the case office</a> and we’ll send your result and solution.</div>';
   }
 });
 
@@ -571,6 +582,21 @@ function rankFlavour(s){
   return "The file will still be there tomorrow. Come back to it.";
 }
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+// ---- live poll split (social proof) ----
+async function fetchTally(){
+  try{
+    const r=await fetch(CONFIG.endpoint,{method:"POST",
+      headers:{"content-type":"application/json","apikey":CONFIG.apikey},
+      body:JSON.stringify({action:"tally", edition:CONFIG.edition})});
+    const d=await r.json();
+    const el=document.getElementById("pollSplit");
+    if(d && d.total>0){
+      const mPct=Math.round(100*d.murder/d.total);
+      el.textContent="So far, "+mPct+"% would pursue murder · "+(100-mPct)+"% would accept manslaughter ("+d.total+" verdicts in).";
+    }
+  }catch(_){/* social proof is optional; never block */}
+}
 
 // ---- poll ----
 let pollChoice=null;
