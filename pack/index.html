@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Which Sarah? — Official Investigator Pack</title>
+<meta name="description" content="Get the free Official Investigator Pack for the Wexbridge case file Which Sarah? — printable evidence checklist, timeline, identity tracker and revision sheets.">
+<style>
+  :root{--paper:#efe4cf;--ink:#2b2420;--ink-soft:#5c5148;--crimson:#8b1a1a;--crimson2:#a52222;
+    --rule:#c3b190;--rule-dk:#9c876a}
+  *{box-sizing:border-box} html,body{margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.55}
+  .wrap{max-width:600px;margin:0 auto;padding:32px 18px 60px}
+  .sheet{background:linear-gradient(180deg,#f6ecd8,#eaddc2);border:1px solid var(--rule-dk);
+    box-shadow:0 2px 10px rgba(60,40,20,.18);padding:26px 22px}
+  .wcf-brand{text-align:center;margin:2px 0 14px} .wcf-logo{width:76px;height:76px}
+  .eyebrow{font-family:ui-monospace,"Courier New",monospace;text-transform:uppercase;letter-spacing:.22em;
+    font-size:11px;color:var(--crimson);font-weight:700;text-align:center}
+  h1{font-size:27px;margin:.3em 0 .2em;text-align:center}
+  p.lede{color:var(--ink-soft);font-size:15px}
+  hr.rule{border:0;border-top:1px solid var(--rule);margin:18px 0}
+  ul.kit{list-style:none;padding:0;margin:8px 0;font-family:ui-monospace,"Courier New",monospace;font-size:13px}
+  ul.kit li{padding:3px 0 3px 20px;position:relative}
+  ul.kit li::before{content:"›";position:absolute;left:4px;color:var(--crimson);font-weight:700}
+  label.fld{display:block;font-weight:700;font-size:14px;margin:14px 0 6px}
+  input[type=email]{width:100%;font-family:ui-monospace,"Courier New",monospace;font-size:15px;color:var(--ink);
+    background:#fbf4e4;border:1px solid var(--rule-dk);padding:12px 12px;border-radius:2px}
+  input[type=email]:focus{outline:2px solid var(--crimson);outline-offset:1px}
+  .consent{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--ink-soft);margin:12px 0}
+  button.primary{display:block;width:100%;margin-top:16px;cursor:pointer;text-align:center;text-decoration:none;
+    font-family:ui-monospace,"Courier New",monospace;text-transform:uppercase;letter-spacing:.12em;
+    font-size:15px;font-weight:700;color:var(--paper);background:var(--crimson);border:1px solid #6f1414;
+    padding:15px;border-radius:2px}
+  button.primary:hover{background:var(--crimson2)} button.primary:disabled{opacity:.55;cursor:default}
+  a.primary{display:block;width:100%;margin-top:16px;text-align:center;text-decoration:none;
+    font-family:ui-monospace,"Courier New",monospace;text-transform:uppercase;letter-spacing:.12em;
+    font-size:15px;font-weight:700;color:var(--paper);background:var(--crimson);border:1px solid #6f1414;
+    padding:15px;border-radius:2px}
+  .muted{color:var(--ink-soft);font-size:13px}
+  .foot{margin-top:22px;text-align:center;font-size:13px;color:var(--ink-soft)}
+  .foot a{color:var(--crimson)}
+  .err{background:#f7e0d8;border:1px solid var(--crimson);color:#7a1a1a;padding:12px 14px;margin:12px 0;font-size:14px}
+  .screen{display:none} .screen.active{display:block}
+  .spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.5);border-top-color:#fff;
+    border-radius:50%;animation:sp .7s linear infinite;vertical-align:-3px;margin-right:8px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .center{text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="sheet">
+    <div class="wcf-brand"><img class="wcf-logo" src="../which-sarah/wcf.png" width="76" height="76" alt="Wexbridge Case Files"></div>
+
+    <!-- ===================== FORM ===================== -->
+    <section id="s-form" class="screen active">
+      <div class="eyebrow">Wexbridge Constabulary</div>
+      <h1>The Official Investigator Pack</h1>
+      <p class="lede center">Your printable field kit for working <i>Which Sarah?</i> — spoiler-free, and
+        free. Tell us where to send it and it's yours.</p>
+      <hr class="rule">
+      <p class="muted">Inside the pack:</p>
+      <ul class="kit">
+        <li>Spoiler-free evidence checklist</li>
+        <li>Detailed case timeline worksheet</li>
+        <li>Identity tracker (Sarah A / Sarah B)</li>
+        <li>Case revision &amp; final accusation sheets</li>
+      </ul>
+      <label class="fld" for="email">Your email</label>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email" inputmode="email" required>
+      <label class="consent"><input type="checkbox" id="consent">
+        <span>Add me to the Wexbridge mailing list — be first to know when the next case opens.
+          I can unsubscribe any time.</span></label>
+      <div id="err"></div>
+      <button class="primary" id="getBtn" type="button">Send me the pack</button>
+      <p class="foot muted">We only use your email for the Wexbridge Case Files. No spam, ever.</p>
+    </section>
+
+    <!-- ===================== DONE ===================== -->
+    <section id="s-done" class="screen center">
+      <div class="eyebrow">Pack Released</div>
+      <h1>Your pack is ready</h1>
+      <p class="lede">Print it, grab a pen, and work the file. Good luck, investigator.</p>
+      <a class="primary" id="downloadLink" target="_blank" rel="noopener">Download the Investigator Pack</a>
+      <p class="foot">Finished the case? <a href="../which-sarah/">Submit your verdict →</a></p>
+    </section>
+
+  </div>
+  <p class="foot muted">Wexbridge Case Files · Denella Publishing · denellapublishing.com/case-files</p>
+</div>
+
+<script>
+"use strict";
+const CONFIG = {
+  endpoint: "https://yninvzkocidcpkaoibpy.supabase.co/functions/v1/wexbridge",
+  apikey:   "sb_publishable_kLbFI-PBqhcv8o3Hs4Codw_hTToyoFh",
+  edition:  "which-sarah",
+};
+function show(id){ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active"); window.scrollTo({top:0,behavior:"smooth"}); }
+
+const getBtn=document.getElementById("getBtn");
+getBtn.addEventListener("click", async ()=>{
+  const email=document.getElementById("email").value.trim();
+  const consent=document.getElementById("consent").checked;
+  document.getElementById("err").innerHTML="";
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    document.getElementById("err").innerHTML='<div class="err">Please enter a valid email address so we can send you the pack.</div>';
+    return;
+  }
+  getBtn.disabled=true; getBtn.innerHTML='<span class="spin"></span>Sending…';
+  try{
+    const r=await fetch(CONFIG.endpoint,{method:"POST",
+      headers:{"content-type":"application/json","apikey":CONFIG.apikey},
+      body:JSON.stringify({action:"pack", edition:CONFIG.edition, email, consent_newsletter:consent})});
+    const d=await r.json();
+    if(!r.ok || !d.ok || !d.packUrl) throw new Error(d.message||d.error||"failed");
+    const a=document.getElementById("downloadLink");
+    a.href=d.packUrl;
+    show("s-done");
+    // nudge the download
+    setTimeout(()=>{ try{ window.open(d.packUrl,"_blank","noopener"); }catch(_){} }, 300);
+  }catch(err){
+    getBtn.disabled=false; getBtn.textContent="Send me the pack";
+    document.getElementById("err").innerHTML='<div class="err">Something went wrong. Please try again in a moment, or email '
+      +'<a href="mailto:contactus@denellapublishing.com">contactus@denellapublishing.com</a>.</div>';
+  }
+});
+</script>
+</body>
+</html>
