@@ -376,9 +376,6 @@ const CONFIG = {
   endpoint: "https://yninvzkocidcpkaoibpy.supabase.co/functions/v1/wexbridge",
   apikey:   "sb_publishable_kLbFI-PBqhcv8o3Hs4Codw_hTToyoFh", // publishable, safe to ship
   edition:  "which-sarah",
-  // Fallback PDF path until the full Storage gate is live; then the function's
-  // signed URL takes over and this public file is removed.
-  pdfUrl:   "./solution.pdf",
   // Why Nora? (next case) buy link — the case-files brand page (lists the series).
   whyNoraUrl: "https://denellapublishing.com/case-files/",
   // Amazon "write a review" deep link for Which Sarah? (ASIN 1918954178).
@@ -498,7 +495,8 @@ submitBtn.addEventListener("click", async ()=>{
     // gated PDF: the function returns a short-lived signed URL. Wire the final
     // "Download complete case file" button to it; if unavailable, offer support.
     const pf=document.getElementById("pdfFinal");
-    pf.href = data.pdfUrl || CONFIG.pdfUrl;   // signed URL once the gate is live; public PDF until then
+    if(data.pdfUrl){ pf.href=data.pdfUrl; }         // gated signed URL (48h)
+    else { pf.href=SUPPORT_MAILTO; pf.textContent="Request the complete case file"; }
     renderReveal(data);
     fetchTally();
     revealIdx=0; show(REVEAL[0]);
