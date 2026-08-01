@@ -389,6 +389,9 @@ const CONFIG = {
   instagram: "denellapublishing",
   tiktok: "denellastore",
   hashtag: "WhichSarah",
+  // Where the SHARE CARD sends people — the PUBLIC purchase page, NOT the hidden
+  // verdict portal (QR-only + spoilers). The case-files brand page leads to buying.
+  buyUrl: "denellapublishing.com/case-files",
 };
 
 // ---- the 8 questions (constrained inputs) ----
@@ -537,7 +540,7 @@ function rankCardBlob(){
     x.fillStyle="#5c5148"; x.font='23px "Courier New", monospace';
     x.fillText("IG @"+CONFIG.instagram+"   ·   TikTok @"+CONFIG.tiktok, 540, 935);
     x.fillStyle="#8b1a1a"; x.font='700 24px "Courier New", monospace';
-    x.fillText("VERDICT.DENELLAPUBLISHING.COM", 540, 985);
+    x.fillText("GET THE CASE FILE · "+CONFIG.buyUrl.toUpperCase(), 540, 985);
     c.toBlob(b=>resolve(b), "image/png");
   });
 }
