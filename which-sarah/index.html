@@ -240,6 +240,7 @@
       <div class="rankname" id="rankName">—</div>
       <p class="rankflavour" id="rankFlavour"></p>
       <button class="primary" id="shareBtn" type="button" style="max-width:280px;margin:16px auto 0;background:var(--ink);border-color:var(--ink)">Share your rank</button>
+      <p class="muted" style="max-width:340px;margin:8px auto 0">Post your verdict &amp; tag us — IG <b>@denellapublishing</b> · TikTok <b>@denellastore</b> · <b>#WhichSarah</b></p>
       <button class="primary" data-next style="max-width:280px;margin:12px auto 0">Mark my answers</button>
     </section>
 
@@ -354,6 +355,7 @@
         think — and helps the next detective find the file.</p>
       <a class="primary" id="reviewLink" target="_blank" rel="noopener">Leave an Amazon review</a>
       <button class="primary" id="shareBtn2" type="button" style="background:var(--ink);border-color:var(--ink)">Share your rank card</button>
+      <p class="muted" style="margin:8px 0 0">Post it &amp; tag us — IG <b>@denellapublishing</b> · TikTok <b>@denellastore</b> · <b>#WhichSarah</b></p>
       <hr class="rule">
       <div class="eyebrow">The Next Case</div>
       <h2 style="margin-top:6px">Why Nora?</h2>
@@ -383,6 +385,10 @@ const CONFIG = {
   // Support / fault door. The solution PDF is GATED behind submission (served
   // via a signed URL from the function), so this is a SEPARATE door, not the reveal.
   supportEmail: "contactus@denellapublishing.com",
+  // Social call-out — used in the share caption, the rank card, and the prompt line.
+  instagram: "denellapublishing",
+  tiktok: "denellastore",
+  hashtag: "WhichSarah",
 };
 
 // ---- the 8 questions (constrained inputs) ----
@@ -526,10 +532,12 @@ function rankCardBlob(){
     x.fillText(LAST_SCORE+"/8", 540, 660);
     x.fillStyle="#8b1a1a"; x.font='700 96px Georgia, serif';
     x.fillText(LAST_RANK_SHORT.toUpperCase(), 540, 800);
-    x.fillStyle="#5c5148"; x.font='28px "Courier New", monospace';
-    x.fillText("Can you close the case?", 540, 890);
-    x.fillStyle="#8b1a1a"; x.font='700 26px "Courier New", monospace';
-    x.fillText("VERDICT.DENELLAPUBLISHING.COM", 540, 952);
+    x.fillStyle="#8b1a1a"; x.font='700 42px Georgia, serif';
+    x.fillText("#"+CONFIG.hashtag, 540, 890);
+    x.fillStyle="#5c5148"; x.font='23px "Courier New", monospace';
+    x.fillText("IG @"+CONFIG.instagram+"   ·   TikTok @"+CONFIG.tiktok, 540, 935);
+    x.fillStyle="#8b1a1a"; x.font='700 24px "Courier New", monospace';
+    x.fillText("VERDICT.DENELLAPUBLISHING.COM", 540, 985);
     c.toBlob(b=>resolve(b), "image/png");
   });
 }
@@ -537,7 +545,7 @@ async function shareRank(){
   let blob; try{ blob=await rankCardBlob(); }catch(e){ return; }
   if(!blob) return;
   const file=new File([blob], "wexbridge-rank.png", {type:"image/png"});
-  const text=LAST_SCORE+"/8 · "+LAST_RANK_SHORT+" at Wexbridge Case Files. Can you close the case? Which Sarah?";
+  const text=LAST_SCORE+"/8 · "+LAST_RANK_SHORT+" at Wexbridge Case Files — can you solve Which Sarah? #"+CONFIG.hashtag+"  ·  IG @"+CONFIG.instagram+"  ·  TikTok @"+CONFIG.tiktok;
   if(navigator.canShare && navigator.canShare({files:[file]})){
     try{ await navigator.share({files:[file], text}); return; }catch(_){ /* user cancelled or unsupported → fall through */ }
   }
